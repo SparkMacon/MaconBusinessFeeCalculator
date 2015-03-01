@@ -1,0 +1,142 @@
+<html>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<body>
+    <form id="calculator">
+
+        <p>Select applicable private licenses: </p>
+        <p>
+            <select multiple id="selectLicenses"></select>
+        </p>
+        <input type="button" value="Clear" id="clear" />
+
+        <hr />
+
+        <p>Number Of Employees: <input id="employeeNumber" /> x $39</p>
+        <p>Administration Fee: $65</p>
+
+        <hr />
+
+        <p>Total: <input id="total" disabled="disabled" /></p>
+
+        <p><input type="submit" /></p>
+
+    </form>
+</body>
+
+<script type="text/javascript">
+
+// function to perform our calculation.
+function calculate () {
+
+    // retrieve the values from the number of employees
+    var employees = $('#employeeNumber').val();
+
+    // initialize the total variable
+    var total = 0;
+
+    // iterate through each selected license and add its cost to the total
+    $('#selectLicenses :selected').each(function(i, selected){
+        total += Number(selected.value);
+    });
+
+    // add the cost per employee and administration fee
+    total += Number(employees) * 39 + 65;
+
+    // set the value of the total field on the page
+    $('#total').val( total.toFixed(2) );
+    
+    // submit event fucntions must return false,
+    // to tell the browser not to load a new page.
+    return false;
+}
+
+// function to setup the fee form
+function setupForm () {
+
+    // list of license types and their fee cost
+    var license_types = {
+        'ADULT ENTERTAINER PERMIT': 65.00,
+        'ADULT ENTERTAINMENT ESTABLISHMENT': 1300.00,
+        'BAIL BONDING COMPANY': 700.00,
+        'HOME BREW PERMIT': 50.00,
+        'BEER OR MALT BEVERAGES, RETAIL (CONSUMED ON PREMISES)': 420.00,
+        'BEER OR MALT BEVERAGES, RETAIL (PACKAGED TO GO)': 420.00,
+        'BEER OR MALT BEVERAGES, RETAIL (CONSUMED ON PREMISES AND PACKAGED TO GO)': 488.00,
+        'BEER OR MALT BEVERAGES, RETAIL (DRAFT BEER IN CONNECTION WITH OTHER BEER LICENSE)': 70.00,
+        'BEER OR MALT BEVERAGES, WHOLESALE': 1310.00,
+        'WINE, RETAIL (CONSUMED ON PREMISES)': 279.00,
+        'WINE, RETAIL (PACKAGED TO GO)': 279.00,
+        'WINE, RETAIL (WHOLESALE)': 612.00,
+        'LIQUOR, RETAIL (PACKAGED TO GO)': 1548.00,
+        'LIQUOR, RETAIL (SALES BY THE DRINK/CONSUMED ON PREMISES)': 2097.00,
+        'LIQUOR, RETAIL (WHOLESALE)': 4193.00,
+        'BROWN BAGGING PERMIT (WITH BEER AND WINE LICENSE)': 700.00,
+        'BROWN BAGGING PERMIT (WITH LIQUOR, BEER AND WINE LICENSE)': 500.00,
+        'LIQUOR-CATERED LICENSE*': 250.00,
+        'BEER-CATERED LICENSE*': 200.00,
+        'WINE-CATERED LICENSE*': 200.00,
+        'WINE & BEER CATERED LICENSE': 300.00,
+        'WINE, BEER, & LIQUOR CATERED LICENSE': 350.00,
+        'MANUFACTURE ALCOHOLIC BEVERAGES (BREW PUB)': 1000.00,
+        'SUNDAY SALES PERMIT': 0.00,
+        'BILLIARD OR POOL HALL': 87.00,
+        'MASSAGE THERAPISTS, MASSAGE PARLORS': 150.00,
+        'DANCE HALL': 262.00,
+        'DEALERS IN PRECIOUS METALS AND GEMS': 700.00,
+        'LANDFILL USERS PERMIT': 121.00,
+        'PAWNBROKER': 350.00,
+        'PRIVATE DETECTIVE (STATE LICENSE REQUIRED)': 176.00,
+        'SHOOTING RANGE (INDOOR)': 87.00,
+        'TAXICAB DRIVER PERMIT': 15.00,
+        'TAXICAB COMPANY - 1 TAXICAB': 100.00,
+        'TAXICAB COMPANY - 5 TAXICABS': 500.00,
+        'TAXICAB COMPANY - 10 TAXICABS': 1000.00,
+        'TAXICAB COMPANY - 15 TAXICABS': 1500.00,
+        'TAXICAB COMPANY - 20 TAXICABS': 2000.00,
+        'TRANSIENT MERCHANT (PER DAY)': 19.00,
+        'DOOR-TO-DOOR SOLICITATION': 110.00,
+        'WATCHES, CLOCKS OR JEWELRY AT AUCTION': 787.00,
+        'INSURANCE (CREDIT LIFE IN CONNECTION WITH MONEY LENDERS)': 150.00,
+        'INSURANCE (LIFE, ACCIDENT, SICKNESS -EACH AGENCY OR BROKER)': 150.00,
+        'INSURANCE (PROPERTY, CASUALTY, SURETY EACH- AGENCY OR BROKER)': 150.00,
+        'SIDEWALK CAFE PERMIT (INSURANCE REQUIRED)': 130.00,
+        'SIDEWALK FOOD VENDOR PERMIT (INSURANCE REQUIRED) EACH CART': 130.00,
+        'GOING OUT OF BUSINESS FOR 30 DAYS (NOT ADDING TO STOCK)': 32.50,
+        'GOING OUT OF BUSINESS FOR 60 DAY (NOT ADDING TO STOCK)': 65.00,
+        'GOING OUT OF BUSINESS FOR 90 DAY (NOT ADDING TO STOCK)': 97.50,
+        'GOING OUT OF BUSINESS FOR 30 DAYS (ADDING TO STOCK)': 130.00,
+        'GOING OUT OF BUSINESS FOR 60 DAYS (ADDING TO STOCK)': 260.00,
+        'GOING OUT OF BUSINESS FOR 90 DAYS (ADDING TO STOCK)': 390.00,
+        'FORTUNE TELLERS': 100.00,
+        'BUSINESS INCUBATOR': 50.00,
+        'BUSINESS INCUBATEE': 32.50,
+        'YARD SALE [ONLY 3 ISSUED PER CALENDAR YEAR]': 2.50
+    };
+
+    // checkbox element
+    var select = document.getElementById("selectLicenses");
+
+    // iterate through each license type and add it to the list of options
+    for(var license_type in license_types) {
+        var element = document.createElement("option");
+        element.textContent = license_type + ' ( $' + license_types[license_type].toFixed(2) + ' )';
+        element.value = license_types[license_type];
+        select.appendChild(element);
+    }
+}
+
+// populate the multi select box on document load
+$(document).ready(setupForm);
+
+// run the calculate function on submit
+$('#calculator').submit( calculate );
+
+// clear selected license types when clear button is clicked
+$("#clear").click(function () {
+    $("#selectLicenses > option").attr("selected",false);
+});    
+
+</script>
+
+</html>
